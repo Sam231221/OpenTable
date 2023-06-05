@@ -64,7 +64,6 @@ export default function ReservationCard({
 
     return timesWithinWindow;
   };
-  console.log("asda:", data);
   return (
     <div className="sticky top-0 bg-white rounded p-3 shadow-md">
       <div className="text-center border-b pb-2 font-bold">

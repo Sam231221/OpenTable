@@ -36,7 +36,6 @@ not on browser console.This is because Home page is Server Component.
 
 export default async function Home() {
   const restaurants = await fetchRestaurants();
-  // console.log({ restaurants });
   return (
     <main>
       <Header />

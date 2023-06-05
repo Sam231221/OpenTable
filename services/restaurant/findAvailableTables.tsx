@@ -29,7 +29,6 @@ export const findAvailabileTables = async ({
       errorMessage: "Invalid time provided",
     });
   }
-  console.log("fkingres1:", restaurant);
   //query possible available bookings with gte and lt
   const bookings = await prisma.booking.findMany({
     where: {
@@ -44,8 +43,6 @@ export const findAvailabileTables = async ({
       tables: true,
     },
   });
-
-  console.log("before bookings:", bookings);
 
   //declare an bookintableobj and update tables field
   const bookingTablesObj: { [key: string]: { [key: number]: true } } = {};
@@ -78,9 +75,7 @@ export const findAvailabileTables = async ({
     });
   });
 
-  console.log("after bookings:", bookings);
   // return res.json({ searchTimes, bookings, bookingTablesObj });
-
   return searchTimesWithTables;
   /*
   Output:

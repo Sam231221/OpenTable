@@ -9,12 +9,10 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  console.log("bearerToken:", req.headers["authorization"]);
   const bearerToken = req.headers["authorization"] as string;
   const token = bearerToken.split(" ")[1];
 
   //we know the decoded content is email
-  console.log("Decoded token:", jwt.decode(token));
   const payload = jwt.decode(token) as { email: string };
 
   if (!payload.email) {

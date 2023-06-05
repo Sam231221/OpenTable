@@ -49,7 +49,7 @@ export default async function RestaurantDetailPage({
   params: { slug: string };
 }) {
   const restaurant = await fetchSingleRestaurantBySlug(params.slug);
-  console.log({ restaurant });
+  // console.log({ restaurant });
   return (
     <>
       <div className="bg-white w-[70%] rounded p-3 shadow">
