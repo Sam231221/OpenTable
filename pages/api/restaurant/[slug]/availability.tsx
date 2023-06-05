@@ -1,6 +1,5 @@
 import { PrismaClient } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
-import { times } from "../../../../data";
 import { findAvailabileTables } from "../../../../services/restaurant/findAvailableTables";
 
 const prisma = new PrismaClient();
