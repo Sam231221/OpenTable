@@ -478,7 +478,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ 95769:
+/***/ 34517:
 /***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
 
 Promise.resolve(/* import() eager */).then(__webpack_require__.t.bind(__webpack_require__, 3280, 23));
@@ -489,8 +489,8 @@ Promise.resolve(/* import() eager */).then(__webpack_require__.t.bind(__webpack_
 Promise.resolve(/* import() eager */).then(__webpack_require__.bind(__webpack_require__, 44050));
 Promise.resolve(/* import() eager */).then(__webpack_require__.t.bind(__webpack_require__, 7649, 23));
 Promise.resolve(/* import() eager */).then(__webpack_require__.bind(__webpack_require__, 57517));
-Promise.resolve(/* import() eager */).then(__webpack_require__.bind(__webpack_require__, 76775));
-Promise.resolve(/* import() eager */).then(__webpack_require__.bind(__webpack_require__, 14183))
+Promise.resolve(/* import() eager */).then(__webpack_require__.bind(__webpack_require__, 14183));
+Promise.resolve(/* import() eager */).then(__webpack_require__.bind(__webpack_require__, 76775))
 
 /***/ }),
 
@@ -1608,7 +1608,7 @@ async function RestaurantDetailPage({ params  }) {
 var __webpack_require__ = require("../../../webpack-runtime.js");
 __webpack_require__.C(exports);
 var __webpack_exec__ = (moduleId) => (__webpack_require__(__webpack_require__.s = moduleId))
-var __webpack_exports__ = __webpack_require__.X(0, [405,346,780,188,875,81,505,566,452], () => (__webpack_exec__(64980)));
+var __webpack_exports__ = __webpack_require__.X(0, [405,346,780,188,875,81,686,566,438], () => (__webpack_exec__(64980)));
 module.exports = __webpack_exports__;
 
 })();
