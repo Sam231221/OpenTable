@@ -1,4 +1,11 @@
 {
+  "/api/auth/me": "pages/api/auth/me.js",
+  "/api/auth/signin": "pages/api/auth/signin.js",
+  "/api/auth/signup": "pages/api/auth/signup.js",
+  "/api/hello": "pages/api/hello.js",
+  "/api/restaurant/[slug]/availability": "pages/api/restaurant/[slug]/availability.js",
+  "/api/restaurant/[slug]/reserve": "pages/api/restaurant/[slug]/reserve.js",
+  "/api/seed": "pages/api/seed.js",
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js"
