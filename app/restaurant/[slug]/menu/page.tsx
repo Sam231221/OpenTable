@@ -2,6 +2,11 @@ import { prisma } from "@/db";
 import Menu from "../components/Menu";
 import RestaurantNavbar from "../components/RestaurantNavbar";
 
+export const metadata = {
+  title: "OpenTable | Restaurant MenuPage",
+  description:
+    "Make online reservations, read restaurant reviews from diners, and earn points towards free meals. OpenTable is a real-time online reservation network for fine dining restaurants..",
+};
 const fetchRestaurantMenu = async (slug: string) => {
   const restaurant = await prisma.restaurant.findUnique({
     where: {

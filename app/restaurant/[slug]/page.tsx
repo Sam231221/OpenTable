@@ -30,7 +30,7 @@ export const fetchSingleRestaurantBySlug = async (
       images: true,
       description: true,
       slug: true,
-      reviews: true,
+      reviews: true, 
       open_time: true,
       close_time: true,
     },
