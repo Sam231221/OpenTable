@@ -1,3 +1,6 @@
+# Description
+This is a Next Js chat app
+
 # Authentication
 
 Table and Booking Model has many to many relationship
