@@ -1,1 +1,1 @@
-This is NextJs chat app.
+This is NextJs chat app for.
