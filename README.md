@@ -1,5 +1,5 @@
 # Description
-This is a Next Js chat app built with Prisma
+This is a Next Js chat app built with Prisma and Pusher
 
 # Authentication
 
