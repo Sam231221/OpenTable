@@ -1,1 +1,1 @@
-This is NextJs chat app for.
+This is NextJs chat app built with Pusher and PostgreSql.
