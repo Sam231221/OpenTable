@@ -1,8 +1,7 @@
-import { PrismaClient, Table } from "@prisma/client";
+import { prisma } from "@/db";
+import { Table } from "@prisma/client";
 import { NextApiResponse } from "next";
-import { times } from "../../data";
-
-const prisma = new PrismaClient();
+import { times } from "@/data/times";
 
 export const findAvailabileTables = async ({
   time,
@@ -19,16 +18,17 @@ export const findAvailabileTables = async ({
     close_time: string;
   };
 }) => {
+  //if time doesnt matches
   const searchTimes = times.find((t) => {
     return t.time === time;
   })?.searchTimes;
 
   if (!searchTimes) {
     return res.status(400).json({
-      errorMessage: "Invalid data provided",
+      errorMessage: "Invalid time provided",
     });
   }
-
+  //query possible available bookings with gte and lt
   const bookings = await prisma.booking.findMany({
     where: {
       booking_time: {
@@ -43,8 +43,8 @@ export const findAvailabileTables = async ({
     },
   });
 
+  //declare an bookintableobj and update tables field
   const bookingTablesObj: { [key: string]: { [key: number]: true } } = {};
-
   bookings.forEach((booking) => {
     bookingTablesObj[booking.booking_time.toISOString()] =
       booking.tables.reduce((obj, table) => {
@@ -74,5 +74,16 @@ export const findAvailabileTables = async ({
     });
   });
 
+  // return res.json({ searchTimes, bookings, bookingTablesObj });
   return searchTimesWithTables;
+  /*
+  Output:
+  [
+  {
+    number_of_people: 4,
+    booking_time: 2023-06-01T22:30:29.000Z,
+    tables: [ [Object] ]
+  }
+]
+  */
 };

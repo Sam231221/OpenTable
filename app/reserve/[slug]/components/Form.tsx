@@ -24,6 +24,8 @@ export default function Form({
   const [day, time] = date.split("T");
   const [disabled, setDisabled] = useState(true);
   const [didBook, setDidBook] = useState(false);
+
+  //creates reservation
   const { error, loading, createReservation } = useReservation();
 
   useEffect(() => {

@@ -1,9 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 
 import jwt from "jsonwebtoken";
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { prisma } from "@/db";
 
 export default async function handler(
   req: NextApiRequest,
@@ -12,6 +10,7 @@ export default async function handler(
   const bearerToken = req.headers["authorization"] as string;
   const token = bearerToken.split(" ")[1];
 
+  //we know the decoded content is email
   const payload = jwt.decode(token) as { email: string };
 
   if (!payload.email) {
@@ -20,6 +19,7 @@ export default async function handler(
     });
   }
 
+  //Now, find the user with that email and just display it
   const user = await prisma.user.findUnique({
     where: {
       email: payload.email,

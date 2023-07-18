@@ -1,3 +1,18 @@
+import { Review } from "@prisma/client";
+import { fetchSingleRestaurantBySlug } from "../page";
+import { prisma } from "@/db";
+
+interface Restaurant {
+  name: string;
+  reviews: Review[];
+  id: number;
+  images: string[];
+  description: string;
+  open_time: string;
+  close_time: string;
+  slug: string;
+}
+
 export default function Header({ name }: { name: string }) {
   const renderTitle = () => {
     const nameArray = name.split("-");
@@ -6,13 +21,42 @@ export default function Header({ name }: { name: string }) {
 
     return nameArray.join(" ");
   };
+  const fetchSingleRestaurantBySlug = (slug: string) => {
+    const restaurant = prisma.restaurant.findUnique({
+      where: {
+        slug,
+      },
+      select: {
+        id: true,
+        name: true,
+        images: true,
+        description: true,
+        slug: true,
+        reviews: true,
+        open_time: true,
+        close_time: true,
+      },
+    });
 
+    return restaurant;
+  };
+  const restaurant = fetchSingleRestaurantBySlug(name);
+  if (!restaurant) {
+    throw new Error();
+  }
   return (
-    <div className="h-96 overflow-hidden">
-      <div className="bg-center bg-gradient-to-r from-[#0f1f47] to-[#5f6984] h-full flex justify-center items-center">
-        <h1 className="text-7xl text-white capitalize text-shadow text-center">
-          {renderTitle()}
-        </h1>
+    <div>
+      <div
+        // style={{
+        //   backgroundImage: `url(${restaurant?.images[0]})`,
+        //   backgroundPosition: "center",
+        //   backgroundSize: "auto",
+        //   backgroundBlendMode: "soft-light",
+        //   backgroundColor: "rgba(0,0,0,.3)",
+        // }}
+        className="h-96 flex justify-center items-center"
+      >
+        {renderTitle()}
       </div>
     </div>
   );

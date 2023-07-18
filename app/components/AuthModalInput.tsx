@@ -1,5 +1,8 @@
 import React from "react";
 
+/*props are usually described under small component 
+Then we call this from main component.
+*/
 interface Props {
   inputs: {
     firstName: string;
@@ -20,6 +23,7 @@ export default function AuthModalInputs({
 }: Props) {
   return (
     <div>
+      {/* for signup show firstName and lastName */}
       {isSignin ? null : (
         <div className="my-3 flex justify-between text-sm">
           <input
@@ -40,6 +44,8 @@ export default function AuthModalInputs({
           />
         </div>
       )}
+
+      {/*for sign in show email */}
       <div className="my-3 flex justify-between text-sm">
         <input
           type="text"
@@ -50,6 +56,8 @@ export default function AuthModalInputs({
           name="email"
         />
       </div>
+
+      {/* for signup show phone and city */}
       {isSignin ? null : (
         <div className="my-3 flex justify-between text-sm">
           <input
@@ -70,6 +78,8 @@ export default function AuthModalInputs({
           />
         </div>
       )}
+
+      {/*for sign in show password */}
       <div className="my-3 flex justify-between text-sm">
         <input
           type="password"

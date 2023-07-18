@@ -1,7 +1,16 @@
-import NavBar from "./components/NavBar";
+import Navbar from "./components/Navbar";
 import AuthContext from "./context/AuthContext";
 import "./globals.css";
+import { Inter } from "next/font/google";
 import "react-datepicker/dist/react-datepicker.css";
+const inter = Inter({ subsets: ["latin"] });
+
+export const metadata = {
+  title: "OpenTable",
+  description:
+    "Make online reservations, read restaurant reviews from diners, and earn points towards free meals. OpenTable is a real-time online reservation network for fine dining restaurants..",
+};
+
 export default function RootLayout({
   children,
 }: {
@@ -9,16 +18,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      {/*
-        <head /> will contain the components returned by the nearest parent
-        head.tsx. Find out more at https://beta.nextjs.org/docs/api-reference/file-conventions/head
-      */}
-      <head />
-      <body>
-        <main className="bg-gray-100 min-h-screen w-screen">
+      <body className={inter.className}>
+        <main className="bg-gray-100 min-h-screen ">
+          {/* AuthoContext providing state to all components inside it */}
           <AuthContext>
             <main className="max-w-screen-2xl m-auto bg-white">
-              <NavBar />
+              <Navbar />
               {children}
             </main>
           </AuthContext>

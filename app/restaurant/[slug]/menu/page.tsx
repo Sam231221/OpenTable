@@ -1,9 +1,12 @@
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "@/db";
 import Menu from "../components/Menu";
-import RestaurantNavBar from "../components/RestaurantNavBar";
+import RestaurantNavbar from "../components/RestaurantNavbar";
 
-const prisma = new PrismaClient();
-
+export const metadata = {
+  title: "OpenTable | Restaurant MenuPage",
+  description:
+    "Make online reservations, read restaurant reviews from diners, and earn points towards free meals. OpenTable is a real-time online reservation network for fine dining restaurants..",
+};
 const fetchRestaurantMenu = async (slug: string) => {
   const restaurant = await prisma.restaurant.findUnique({
     where: {
@@ -31,7 +34,7 @@ export default async function RestaurantMenu({
   return (
     <>
       <div className="bg-white w-[100%] rounded p-3 shadow">
-        <RestaurantNavBar slug={params.slug} />
+        <RestaurantNavbar slug={params.slug} />
         <Menu menu={menu} />
       </div>
     </>

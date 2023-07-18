@@ -3,7 +3,7 @@
 import { useEffect, useState, useContext } from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
-import AuthModalInputs from "./AuthModalInputs";
+import AuthModalInputs from "./AuthModalInput";
 import useAuth from "../../hooks/useAuth";
 import { AuthenticationContext } from "../context/AuthContext";
 import { Alert, CircularProgress } from "@mui/material";
@@ -20,6 +20,9 @@ const style = {
   p: 4,
 };
 
+/*
+Auth Modal handles both sigin and signup process. No sepearate dble modals
+*/
 export default function AuthModal({ isSignin }: { isSignin: boolean }) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -27,6 +30,9 @@ export default function AuthModal({ isSignin }: { isSignin: boolean }) {
   const { signin, signup } = useAuth();
   const { loading, data, error } = useContext(AuthenticationContext);
 
+  /*
+  render content in button based on whether user is logged in or not
+  */
   const renderContent = (signinContent: string, signupContent: string) => {
     return isSignin ? signinContent : signupContent;
   };
@@ -47,6 +53,7 @@ export default function AuthModal({ isSignin }: { isSignin: boolean }) {
     password: "",
   });
 
+  //disable button if all inputs are not provided.
   const [disabled, setDisabled] = useState(true);
 
   useEffect(() => {
@@ -54,7 +61,9 @@ export default function AuthModal({ isSignin }: { isSignin: boolean }) {
       if (inputs.password && inputs.email) {
         return setDisabled(false);
       }
-    } else {
+    }
+    //Sign up
+    else {
       if (
         inputs.firstName &&
         inputs.lastName &&
@@ -70,7 +79,7 @@ export default function AuthModal({ isSignin }: { isSignin: boolean }) {
     setDisabled(true);
   }, [inputs]);
 
-  const handleClick = () => {
+  const handleBtnClick = () => {
     if (isSignin) {
       signin({ email: inputs.email, password: inputs.password }, handleClose);
     } else {
@@ -82,19 +91,21 @@ export default function AuthModal({ isSignin }: { isSignin: boolean }) {
     <div>
       <button
         className={`${renderContent(
-          "bg-blue-400 text-white",
+          "bg-[#247F9E]   text-white hover:bg-[#1f3d6a9]",
           ""
-        )} border p-1 px-4 rounded mr-3`}
+        )} border py-2 p-1 px-4 text-sm rounded mr-3`}
         onClick={handleOpen}
       >
         {renderContent("Sign in", "Sign up")}
       </button>
+
       <Modal
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
+        {/* Form that shows loading and error with validation */}
         <Box sx={style}>
           {loading ? (
             <div className="py-24 px-2 h-[600px] flex justify-center">
@@ -107,11 +118,15 @@ export default function AuthModal({ isSignin }: { isSignin: boolean }) {
                   {error}
                 </Alert>
               ) : null}
+
+              {/* Content for button */}
               <div className="uppercase font-bold text-center pb-2 border-b mb-2">
                 <p className="text-sm">
                   {renderContent("Sign In", "Create Account")}
                 </p>
               </div>
+
+              {/* content for header */}
               <div className="m-auto">
                 <h2 className="text-2xl font-light text-center">
                   {renderContent(
@@ -119,6 +134,7 @@ export default function AuthModal({ isSignin }: { isSignin: boolean }) {
                     "Create Your OpenTable Account"
                   )}
                 </h2>
+                {/* All required inputs unser one component */}
                 <AuthModalInputs
                   inputs={inputs}
                   handleChangeInput={handleChangeInput}
@@ -127,7 +143,7 @@ export default function AuthModal({ isSignin }: { isSignin: boolean }) {
                 <button
                   className="uppercase bg-red-600 w-full text-white p-3 rounded text-sm mb-5 disabled:bg-gray-400"
                   disabled={disabled}
-                  onClick={handleClick}
+                  onClick={handleBtnClick}
                 >
                   {renderContent("Sign In", "Create Account")}
                 </button>

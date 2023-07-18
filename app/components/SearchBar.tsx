@@ -1,13 +1,18 @@
+/*
+If you remove this wont work because we have to use useState() 
+So This is CLient Component.
+*/
 "use client";
 
+import React, { useState } from "react";
+//dont use next/router
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 
 export default function SearchBar() {
   const router = useRouter();
   const [location, setLocation] = useState("");
   return (
-    <div className="text-left text-lg py-3 m-auto flex justify-center">
+    <div className="text-left text-lg flex justify-center">
       <input
         className="rounded  mr-3 p-2 w-[450px]"
         type="text"
@@ -16,14 +21,14 @@ export default function SearchBar() {
         onChange={(e) => setLocation(e.target.value)}
       />
       <button
-        className="rounded bg-red-600 px-9 py-2 text-white"
         onClick={() => {
           if (location === "") return;
           router.push(`/search?city=${location}`);
           setLocation("");
         }}
+        className="rounded bg-red-500 hover:bg-red-600 px-9 py-2 text-white"
       >
-        Let's go
+        Let&apos;s go
       </button>
     </div>
   );

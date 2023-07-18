@@ -1,9 +1,8 @@
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "@/db";
 import { NextApiRequest, NextApiResponse } from "next";
 import { findAvailabileTables } from "../../../../services/restaurant/findAvailableTables";
 
-const prisma = new PrismaClient();
-
+//api for responding to reserve form data from the client.
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -25,6 +24,7 @@ export default async function handler(
       bookerRequest,
     } = req.body;
 
+    //1. Check if restaurant exists.
     const restaurant = await prisma.restaurant.findUnique({
       where: {
         slug,
@@ -43,6 +43,7 @@ export default async function handler(
       });
     }
 
+    //2.Is Restaurant open at the time.
     if (
       new Date(`${day}T${time}`) < new Date(`${day}T${restaurant.open_time}`) ||
       new Date(`${day}T${time}`) > new Date(`${day}T${restaurant.close_time}`)
@@ -52,6 +53,7 @@ export default async function handler(
       });
     }
 
+    //3.Check for available tables
     const searchTimesWithTables = await findAvailabileTables({
       day,
       time,
@@ -65,6 +67,7 @@ export default async function handler(
       });
     }
 
+    //4.Update searchTimesWithTables finding tables that matches the given time criteria.
     const searchTimeWithTables = searchTimesWithTables.find((t) => {
       return t.date.toISOString() === new Date(`${day}T${time}`).toISOString();
     });
@@ -75,8 +78,11 @@ export default async function handler(
       });
     }
 
+    //5.Assign value to tablesCount which is an object.
     const tablesCount: {
+      //2 seats within table
       2: number[];
+      //4seats within table
       4: number[];
     } = {
       2: [],
@@ -91,6 +97,7 @@ export default async function handler(
       }
     });
 
+    //6.Use tablesCount {} to populate tablesToBooks array;
     const tablesToBooks: number[] = [];
     let seatsRemaining = parseInt(partySize);
 
@@ -118,6 +125,7 @@ export default async function handler(
       }
     }
 
+    //7.finally create booking instance.
     const booking = await prisma.booking.create({
       data: {
         number_of_people: parseInt(partySize),
@@ -132,6 +140,7 @@ export default async function handler(
       },
     });
 
+    //8.And then create bookingOnTables instance using tablesToBooks
     const bookingsOnTablesData = tablesToBooks.map((table_id) => {
       return {
         table_id,
@@ -142,7 +151,6 @@ export default async function handler(
     await prisma.bookingsOnTables.createMany({
       data: bookingsOnTablesData,
     });
-
     return res.json(booking);
   }
 }

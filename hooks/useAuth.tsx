@@ -34,6 +34,7 @@ const useAuth = () => {
         error: null,
         loading: false,
       });
+      //finally close Auth Modal.
       handleClose();
     } catch (error: any) {
       setAuthState({
@@ -43,6 +44,7 @@ const useAuth = () => {
       });
     }
   };
+
   const signup = async (
     {
       email,
@@ -66,6 +68,7 @@ const useAuth = () => {
       error: null,
       loading: true,
     });
+
     try {
       const response = await axios.post(
         "http://localhost:3000/api/auth/signup",
@@ -83,6 +86,8 @@ const useAuth = () => {
         error: null,
         loading: false,
       });
+
+      //finally close Auth Modal.
       handleClose();
     } catch (error: any) {
       setAuthState({

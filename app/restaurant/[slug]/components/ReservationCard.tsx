@@ -1,8 +1,9 @@
 "use client";
-import { partySize as partySizes, times } from "../../../../data";
+import { partySize as partySizes } from "@/data/partySizes";
+import { times } from "@/data/times";
 import DatePicker from "react-datepicker";
 import { useState } from "react";
-import useAvailabilities from "../../../../hooks/useAvailabilities";
+import useAvailabilities from "@/hooks/useAvailabilities";
 import { CircularProgress } from "@mui/material";
 import Link from "next/link";
 import {
@@ -22,6 +23,8 @@ export default function ReservationCard({
   const { data, loading, error, fetchAvailabilities } = useAvailabilities();
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
   const [time, setTime] = useState(openTime);
+
+  //initally partySize to 2 as string.
   const [partySize, setPartySize] = useState("2");
   const [day, setDay] = useState(new Date().toISOString().split("T")[0]);
 
@@ -41,7 +44,7 @@ export default function ReservationCard({
       partySize,
     });
   };
-
+  /*We only render all times ranging from open time to closing time for each restaurant. */
   const filterTimeByRestaurantOpenWindow = () => {
     const timesWithinWindow: typeof times = [];
 
@@ -61,9 +64,8 @@ export default function ReservationCard({
 
     return timesWithinWindow;
   };
-
   return (
-    <div className="fixed w-[15%] bg-white rounded p-3 shadow">
+    <div className="sticky top-0 bg-white rounded p-3 shadow-md">
       <div className="text-center border-b pb-2 font-bold">
         <h4 className="mr-7 text-lg">Make a Reservation</h4>
       </div>
@@ -76,8 +78,10 @@ export default function ReservationCard({
           value={partySize}
           onChange={(e) => setPartySize(e.target.value)}
         >
-          {partySizes.map((size) => (
-            <option value={size.value}>{size.label}</option>
+          {partySizes.map((size, i) => (
+            <option key={i} value={size.value}>
+              {size.label}
+            </option>
           ))}
         </select>
       </div>
@@ -101,8 +105,11 @@ export default function ReservationCard({
             value={time}
             onChange={(e) => setTime(e.target.value)}
           >
-            {filterTimeByRestaurantOpenWindow().map((time) => (
-              <option value={time.time}>{time.displayTime}</option>
+            {/* only show restaurant opening time to closing time. */}
+            {filterTimeByRestaurantOpenWindow().map((time, i) => (
+              <option key={i} value={time.time}>
+                {time.displayTime}
+              </option>
             ))}
           </select>
         </div>
@@ -119,19 +126,20 @@ export default function ReservationCard({
       {data && data.length ? (
         <div className="mt-4">
           <p className="text-reg">Select a Time</p>
-          <div className="flex flex-wrap mt-2">
-            {data.map((time) => {
+          <div className="flex gap-3 flex-wrap mt-2">
+            {data.map((time, i) => {
               return time.available ? (
                 <Link
+                  key={i}
                   href={`/reserve/${slug}?date=${day}T${time.time}&partySize=${partySize}`}
-                  className="bg-red-600 cursor-pointer p-2 w-24 text-center text-white mb-3 rounded mr-3"
+                  className="bg-red-600 p-1 w-20 h-6 cursor-pointer text-center text-white mb-2 rounded mr-3"
                 >
                   <p className="text-sm font-bold">
                     {convertToDisplayTime(time.time as Time)}
                   </p>
                 </Link>
               ) : (
-                <p className="bg-gray-300 p-2 w-24 mb-3 rounded mr-3"></p>
+                <p className="bg-gray-300 p-1 w-20 h-6 mb-2 rounded"></p>
               );
             })}
           </div>

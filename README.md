@@ -1,36 +1,46 @@
 This is NextJs chat app.
 
-## Getting Started
+# Authentication
 
-First, run the development server:
+Table and Booking Model has many to many relationship
+.Since User can do a booking for one or more table. And,
+One tabe can have different bookings by different individuals
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+# useAvailabilities hook
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+    -> A hook that determines whether a free tables are availabe or not over a period of time.
+    Implemented in ReservationCard
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+# Availability.ts logic (when find a time btn is clicked).
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+->Find all searhc times
+we have data/times.ts that show times 1 hr before and after.
+->Find all the bookings that falls within that range of time
+-compress into an object where datetime is key and an object of table ids is the value.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+Get data from searchTimesWithTables from findAvailableTable.tsx file and then we can use it to check whether the booking
+for table is available or not.
+We use 'partySize' as user input. Compare this value with a value that is sum of 'seats' field of all tables
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+For example
+const availabilities = searchTimesWithTables
+.map((t) => {
+const sumSeats = t.tables.reduce((sum, table) => {
+return sum + table.seats;
+}, 0);
 
-## Learn More
+        return {
+          time: t.time,
+          //returns boolean
+          available: sumSeats >= parseInt(partySize),
+        };
+      })
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+if partySize is less than sum value
+{
+availabilty:true
+}
+else
+{
+availabilty:false
+}

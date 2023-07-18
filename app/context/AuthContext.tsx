@@ -41,6 +41,13 @@ export default function AuthContext({
     error: null,
   });
 
+  /*
+  Persisting User State
+  ------------------------------
+  Suppose User is sign ined
+  Then Hello Sam in navbar.jsx will persist even
+  if page is reloaded,view again after closing browser.
+  */
   const fetchUser = async () => {
     setAuthState({
       data: null,
@@ -63,7 +70,8 @@ export default function AuthContext({
           Authorization: `Bearer ${jwt}`,
         },
       });
-
+      //returns object
+      // console.log("AuthResponse:", response.data);
       axios.defaults.headers.common["Authorization"] = `Bearer ${jwt}`;
 
       setAuthState({
@@ -85,6 +93,8 @@ export default function AuthContext({
   }, []);
 
   return (
+    //All the children will have auth state(data, error, loading) and ability to change state through setAuthState function.
+    //This is used in App/layout.tsx
     <AuthenticationContext.Provider
       value={{
         ...authState,

@@ -1,11 +1,9 @@
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "@/db";
 import { NextApiRequest, NextApiResponse } from "next";
 import validator from "validator";
 import bcrypt from "bcrypt";
 import * as jose from "jose";
 import { setCookie } from "cookies-next";
-
-const prisma = new PrismaClient();
 
 export default async function handler(
   req: NextApiRequest,
@@ -44,24 +42,24 @@ export default async function handler(
       },
     });
 
+    //if email doesn't exist
     if (!user) {
       return res
         .status(401)
-        .json({ errorMessage: "Email or password is invalid" });
+        .json({ errorMessage: "No user found with this email." });
     }
 
+    //if pw doesn't match
     const isMatch = await bcrypt.compare(password, user.password);
-
     if (!isMatch) {
-      return res
-        .status(401)
-        .json({ errorMessage: "Email or password is invalid" });
+      return res.status(401).json({ errorMessage: "Incorrect password" });
     }
 
+    /*
+    Update jwt token(replacing old one resetting expiry date) to the cookies.
+    */
     const alg = "HS256";
-
     const secret = new TextEncoder().encode(process.env.JWT_SECRET);
-
     const token = await new jose.SignJWT({ email: user.email })
       .setProtectedHeader({ alg })
       .setExpirationTime("24h")
