@@ -30,7 +30,7 @@ const fetchRestaurants = async (): Promise<RestaurantCardType[]> => {
 };
 
 /*
-Notice ,It will print out all restaurants in terminal but
+Notice It will print out all restaurants in terminal but
 not on browser console.This is because Home page is Server Component.
 */
 
